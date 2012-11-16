@@ -1,0 +1,31 @@
+{
+  "name": "toobusy",
+  "description": "Don't fall over when your Node.JS server is too busy.",
+  "homepage": "https://github.com/lloyd/node-toobusy",
+  "version": "0.0.1",
+  "maintainers": [
+    {
+      "name": "Lloyd Hilaiel",
+      "email": "lloyd@hilaiel.com"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/lloyd/node-toobusy/issues"
+  },
+  "licenses": [
+    {
+      "type": "WTFPL"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git://github.com/lloyd/node-toobusy.git"
+    }
+  ],
+  "main": "./index.js",
+  "engines": {
+    "node": ">=0.6.0"
+  }
+}
+
