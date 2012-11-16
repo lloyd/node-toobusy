@@ -3,7 +3,7 @@ const events = require('events');
 // constants
 const eventsEmitted = [ 'busy', 'normal' ];
 const POLL_PERIOD_MS = 500;
-var HIGH_WATER_MARK_MS = 300;
+var HIGH_WATER_MARK_MS = 100;
 
 // state
 var polling = false;
