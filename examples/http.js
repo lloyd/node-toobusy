@@ -1,6 +1,8 @@
 var http = require('http'),
  toobusy = require('..');
 
+console.log("Maximum allowed event loop lag: " + toobusy.maxLag(10) + "ms");
+
 function processRequest(res, num) {
   if (num === undefined) {
     return process.nextTick(function() {
@@ -24,4 +26,4 @@ http.createServer(function (req, res) {
   }
   // we're not too busy!  let's process a request!
   processRequest(res);
-}).listen(3000, '10.0.0.20', 2048);
+}).listen(3000, '127.0.0.1', 2048);
