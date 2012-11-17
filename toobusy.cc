@@ -8,6 +8,9 @@ using namespace v8;
 
 static const unsigned int POLL_PERIOD_MS = 500;
 static unsigned int HIGH_WATER_MARK_MS = 70;
+// A dampening factor.  When determining average calls per second or
+// current lag, we weigh the current value against the previous value 2:1
+// to smooth spikes.
 static const unsigned int AVG_DECAY_FACTOR = 3;
 
 //static uv_idle_t s_idler;
@@ -20,8 +23,8 @@ static uint64_t s_calls;
 Handle<Value> TooBusy(const Arguments& args) {
     bool block = false;
     if (s_currentLag > HIGH_WATER_MARK_MS) {
-        // probabilistically block 2x as many requests as we would need
-        // to in order to catch up.
+        // probabilistically block requests proportional to how
+        // far behind we are.
         double pctToBlock = ((s_currentLag - HIGH_WATER_MARK_MS) /
                              (double) HIGH_WATER_MARK_MS) * 100.0;
         double r = (rand() / (double) RAND_MAX) * 100.0;
@@ -61,11 +64,16 @@ static void every_second(uv_timer_t* handle, int status)
 {
     uint64_t now = uv_hrtime();
 
+    // keep track of the (dampened) average number that toobusy() is called
+    // per second.  This should correlate to the number of requests occuring
+    // per second, and allows us to block a percentage of calls during times
+    // of load.
     s_avgCalls = (s_calls + (s_avgCalls * (AVG_DECAY_FACTOR-1))) /
         AVG_DECAY_FACTOR;
     s_calls = 0;
 
     if (s_lastMark > 0) {
+        // keep track of (dampened) average lag.
         uint64_t lag = ((now - s_lastMark) / 1000000);
         lag = (lag < POLL_PERIOD_MS) ? 0 : lag - POLL_PERIOD_MS;
         s_currentLag = (lag + (s_currentLag * (AVG_DECAY_FACTOR-1))) /
