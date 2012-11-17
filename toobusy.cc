@@ -7,7 +7,7 @@
 using namespace v8;
 
 static const unsigned int POLL_PERIOD_MS = 500;
-static const unsigned int HIGH_WATER_MARK_MS = 50;
+static const unsigned int HIGH_WATER_MARK_MS = 70;
 static const unsigned int AVG_DECAY_FACTOR = 3;
 
 //static uv_idle_t s_idler;
