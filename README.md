@@ -23,7 +23,7 @@ This allows your server to stay *responsive* under extreme load, and continue se
 
 ## usage
 
-    var toobusy = require('..'),
+    var toobusy = require('toobusy'),
         express = require('express');
     
     var app = express.createServer();
