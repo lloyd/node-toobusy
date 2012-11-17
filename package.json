@@ -3,6 +3,9 @@
   "description": "Don't fall over when your Node.JS server is too busy.",
   "homepage": "https://github.com/lloyd/node-toobusy",
   "version": "0.0.2",
+  "dependencies": {
+    "bindings": "1.0.0"
+  },
   "maintainers": [
     {
       "name": "Lloyd Hilaiel",
