@@ -1,0 +1,9 @@
+{
+  "name": "toobusy-examples",
+  "version": "0.0.1",
+  "description": "dependencies required by the toobusy examples",
+  "private": true,
+  "dependencies": {
+    "express": "2"
+  }
+}
