@@ -37,6 +37,7 @@ setInterval(function() {
         running--;
       });
     }).on('error', function(e) {
+      console.log(e);
       running--;
       yucky++;
     }).end();
