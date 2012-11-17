@@ -1,7 +1,7 @@
 var http = require('http'),
  toobusy = require('..');
 
-console.log("Maximum allowed event loop lag: " + toobusy.maxLag(10) + "ms");
+console.log("Maximum allowed event loop lag: " + toobusy.maxLag(50) + "ms");
 
 function processRequest(res, num) {
   if (num === undefined) {
