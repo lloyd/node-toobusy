@@ -10,7 +10,9 @@ var yucky = 0;
 var avg = 0;
 var sadAvg = 0;
 
-// start 100 every second
+// how many requests per second should we run?
+const rps = (process.env['RPS'] || 200) / 40;
+
 var ivalnum = 0;
 setInterval(function() {
   ivalnum++;
@@ -49,5 +51,5 @@ setInterval(function() {
     console.log("  503s:   ", fiveOhThree, "(avg " + sadAvg + "ms)");
     console.log("  errors: ", yucky);
   }
-  for (var i = 0; i < 5; i++) startOne();
+  for (var i = 0; i < rps ; i++) startOne();
 }, 25);
