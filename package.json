@@ -6,6 +6,10 @@
   "dependencies": {
     "bindings": "1.0.0"
   },
+  "devDependencies": {
+    "should": "1.2.1",
+    "mocha": "1.7.0"
+  },
   "maintainers": [
     {
       "name": "Lloyd Hilaiel",
@@ -29,6 +33,8 @@
   "main": "./index.js",
   "engines": {
     "node": ">=0.6.0"
+  },
+  "scripts": {
+    "test": "mocha tests"
   }
 }
-
