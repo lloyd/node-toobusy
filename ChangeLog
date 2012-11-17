@@ -1,3 +1,6 @@
+0.1.1 -
+  * hey look, unit tests!
+
 0.1.0 -
   * improved documentation and samples
   * added `maxLag` parameter
