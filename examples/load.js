@@ -8,17 +8,27 @@ var twoHundred = 0;
 var fiveOhThree = 0;
 var yucky = 0;
 var avg = 0;
-var sadAvg = 0;
 
 // how many requests per second should we run?
-const rps = (process.env['RPS'] || 200) / 40;
+const rps = (process.env['RPS'] || 40) / 40;
+var curRPS = rps;
+var started = 0;
+const startTime = new Date();
+var lastMark = startTime;
 
 var ivalnum = 0;
+
 setInterval(function() {
   ivalnum++;
   function startOne() {
+    started++;
     running++;
     var start = new Date();
+    var endOrError = false;
+    function cEndOrError() {
+      if (endOrError) console.log("end AND error");
+      endOrError = true;
+    }
     http.request({
       host: '127.0.0.1',
       port: 3000,
@@ -30,26 +40,36 @@ setInterval(function() {
     }, function(res) {
       res.on('end', function() {
         if (res.statusCode === 503) {
-          sadAvg = ((new Date() - start) + sadAvg * fiveOhThree) / (fiveOhThree + 1);
           fiveOhThree++;
         } else {
-          avg = ((new Date() - start) + avg * twoHundred) / (twoHundred + 1);
           twoHundred++;
         }
+        avg = ((new Date() - start) + avg * started) / (started + 1);
         running--;
+        cEndOrError();
       });
     }).on('error', function(e) {
-      console.log(e);
+      process.stderr.write(e.toString() + " - " + (new Date() - start) + "ms\n");
+      avg = ((new Date() - start) + avg * started) / (started + 1);
       running--;
       yucky++;
+      cEndOrError();
     }).end();
   }
-  if (!(ivalnum % 40)) {
-    console.log("stats at", (ivalnum / 40) + "s:");
-    console.log("  running:", running);
-    console.log("  200s:   ", twoHundred, "(avg " + avg + "ms)");
-    console.log("  503s:   ", fiveOhThree, "(avg " + sadAvg + "ms)");
-    console.log("  errors: ", yucky);
+
+  for (var i = 0; i < curRPS ; i++) startOne();
+
+  // report and scale up every 2s
+  if (!(ivalnum % (40 * 2))) {
+    var delta = (new Date() - lastMark) / 1000.0 ;
+    console.log(Math.round((new Date() - startTime) / 1000.0),
+                Math.round(started / delta),
+                Math.round(twoHundred / delta),
+                Math.round(fiveOhThree / delta),
+                avg,
+                Math.round(yucky / delta));
+    curRPS = curRPS + .5;
+    started = twoHundred = fiveOhThree = yucky = 0;
+    lastMark = new Date();
   }
-  for (var i = 0; i < rps ; i++) startOne();
 }, 25);

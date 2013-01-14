@@ -9,7 +9,7 @@ app.use(function(req, res, next) {
     res.send(503, "I'm busy right now, sorry.");
   } else {
     next();
-  } 
+  }
 });
 
 app.get('/', function(req, res) {
