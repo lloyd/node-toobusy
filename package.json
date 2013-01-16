@@ -2,7 +2,7 @@
   "name": "toobusy",
   "description": "Don't fall over when your Node.JS server is too busy.",
   "homepage": "https://github.com/lloyd/node-toobusy",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "dependencies": {
     "bindings": "1.0.0"
   },
