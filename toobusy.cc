@@ -39,6 +39,11 @@ Handle<Value> ShutDown(const Arguments& args) {
     return Undefined();
 }
 
+Handle<Value> Lag(const Arguments& args) {
+    HandleScope scope;
+    return scope.Close(Number::New(s_currentLag));
+}
+
 Handle<Value> HighWaterMark(const Arguments& args) {
     HandleScope scope;
 
@@ -87,6 +92,7 @@ extern "C" void init(Handle<Object> target) {
 
     target->Set(String::New("toobusy"), FunctionTemplate::New(TooBusy)->GetFunction());
     target->Set(String::New("shutdown"), FunctionTemplate::New(ShutDown)->GetFunction());
+    target->Set(String::New("lag"), FunctionTemplate::New(Lag)->GetFunction());
     target->Set(String::New("maxLag"), FunctionTemplate::New(HighWaterMark)->GetFunction());
     uv_timer_init(uv_default_loop(), &s_timer);
     uv_timer_start(&s_timer, every_second, POLL_PERIOD_MS, POLL_PERIOD_MS);
