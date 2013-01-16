@@ -40,4 +40,22 @@ describe('toobusy()', function() {
     }
     load();
   });
+
+  it('should return a lag value after a little load', function(done) {
+    function load() {
+      if (toobusy()) {
+        var lag = toobusy.lag();
+        should.exist(lag);
+        lag.should.be.above(1);
+        return done();
+      }
+      var start = new Date();
+      while ((new Date() - start) < 250) {
+        for (var i = 0; i < 1e5;) i++;
+      }
+      setTimeout(load, 0);
+    }
+    load();
+  });
 });
+
