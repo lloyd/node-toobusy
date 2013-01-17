@@ -1,3 +1,7 @@
+0.2.1 -
+  * works on windows
+  * improved express.js example (now targets express 3.0)
+
 0.2.0 -
   * documentation improvements
   * improved examples (including load generation tool and server)
