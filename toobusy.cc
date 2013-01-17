@@ -25,6 +25,8 @@ static uint64_t s_avgCalls;
 static uint64_t s_calls;
 
 Handle<Value> TooBusy(const Arguments& args) {
+    // No HandleScope required, because this function allocates no
+    // v8 classes that reside on the heap.
     bool block = false;
     if (s_currentLag > HIGH_WATER_MARK_MS) {
         // probabilistically block requests proportional to how
@@ -35,10 +37,13 @@ Handle<Value> TooBusy(const Arguments& args) {
         if (r < pctToBlock) block = true;
     }
     s_calls++;
-    return Boolean::New(block);
+    return block ? True() : False();
 }
 
 Handle<Value> ShutDown(const Arguments& args) {
+    // No HandleScope required, because this function allocates no
+    // v8 classes that reside on the heap.
+
     uv_timer_stop(&s_timer);
     return Undefined();
 }
