@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #if defined(_WIN32)
 	#include <time.h>
-#elif
+#else
 	#include <sys/time.h>
 #endif
 
