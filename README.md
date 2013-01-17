@@ -30,7 +30,7 @@ and continue serving as many requests as possible.
     var toobusy = require('toobusy'),
         express = require('express');
     
-    var app = express.createServer();
+    var app = express();
     
     // middleware which blocks requests when we're too busy
     app.use(function(req, res, next) {
@@ -48,12 +48,13 @@ and continue serving as many requests as possible.
       res.send("I counted to " + i);
     });
     
-    app.listen(3000);
+    var server = app.listen(3000);
     
     process.on('SIGINT', function() {
-      app.close();
+      server.close();
       // calling .shutdown allows your process to exit normally
       toobusy.shutdown();
+      process.exit();
     });
 
 ## tunable parameters
