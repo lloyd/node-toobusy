@@ -24,4 +24,5 @@ var server = app.listen(3000);
 process.on('SIGINT', function() {
   server.close();
   toobusy.shutdown();
+  process.exit();
 });
