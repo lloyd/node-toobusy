@@ -1,7 +1,7 @@
 var toobusy = require('..'),
     express = require('express');
 
-var app = express.createServer();
+var app = express();
 
 // Have grace under load
 app.use(function(req, res, next) {
@@ -19,9 +19,9 @@ app.get('/', function(req, res) {
   res.send("I counted to " + i);
 });
 
-app.listen(3000);
+var server = app.listen(3000);
 
 process.on('SIGINT', function() {
-  app.close();
+  server.close();
   toobusy.shutdown();
 });
