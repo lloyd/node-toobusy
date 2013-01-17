@@ -2,7 +2,11 @@
 #include <node.h>
 #include <uv.h>
 #include <stdlib.h>
-#include <sys/time.h>
+#if defined(_WIN32)
+	#include <time.h>
+#elif
+	#include <sys/time.h>
+#endif
 
 using namespace v8;
 
