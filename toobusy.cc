@@ -21,8 +21,6 @@ static const unsigned int AVG_DECAY_FACTOR = 3;
 static uv_timer_t s_timer;
 static uint64_t s_currentLag;
 static uint64_t s_lastMark;
-static uint64_t s_avgCalls;
-static uint64_t s_calls;
 
 Handle<Value> TooBusy(const Arguments& args) {
     // No HandleScope required, because this function allocates no
@@ -36,7 +34,6 @@ Handle<Value> TooBusy(const Arguments& args) {
         double r = (rand() / (double) RAND_MAX) * 100.0;
         if (r < pctToBlock) block = true;
     }
-    s_calls++;
     return block ? True() : False();
 }
 
@@ -77,14 +74,6 @@ Handle<Value> HighWaterMark(const Arguments& args) {
 static void every_second(uv_timer_t* handle, int status)
 {
     uint64_t now = uv_hrtime();
-
-    // keep track of the (dampened) average number that toobusy() is called
-    // per second.  This should correlate to the number of requests occuring
-    // per second, and allows us to block a percentage of calls during times
-    // of load.
-    s_avgCalls = (s_calls + (s_avgCalls * (AVG_DECAY_FACTOR-1))) /
-        AVG_DECAY_FACTOR;
-    s_calls = 0;
 
     if (s_lastMark > 0) {
         // keep track of (dampened) average lag.
