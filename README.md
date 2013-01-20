@@ -23,7 +23,7 @@ and continue serving as many requests as possible.
 
 ## installation
 
-```javascript
+```
 npm install toobusy
 ```
 
