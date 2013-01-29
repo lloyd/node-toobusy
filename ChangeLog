@@ -1,3 +1,7 @@
+0.2.2 -
+  * *really* works on windows
+  * improved documentation
+
 0.2.1 -
   * works on windows
   * improved express.js example (now targets express 3.0)
