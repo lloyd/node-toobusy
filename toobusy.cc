@@ -3,9 +3,9 @@
 #include <uv.h>
 #include <stdlib.h>
 #if defined(_WIN32)
-	#include <time.h>
+  #include <time.h>
 #else
-	#include <sys/time.h>
+  #include <sys/time.h>
 #endif
 
 using namespace v8;
@@ -19,7 +19,7 @@ static const unsigned int AVG_DECAY_FACTOR = 3;
 
 //static uv_idle_t s_idler;
 static uv_timer_t s_timer;
-static uint64_t s_currentLag;
+static uint32_t s_currentLag;
 static uint64_t s_lastMark;
 static uint64_t s_avgCalls;
 static uint64_t s_calls;
@@ -50,7 +50,7 @@ Handle<Value> ShutDown(const Arguments& args) {
 
 Handle<Value> Lag(const Arguments& args) {
     HandleScope scope;
-    return scope.Close(Number::New(s_currentLag));
+    return scope.Close(Integer::New(s_currentLag));
 }
 
 Handle<Value> HighWaterMark(const Arguments& args) {
@@ -88,7 +88,7 @@ static void every_second(uv_timer_t* handle, int status)
 
     if (s_lastMark > 0) {
         // keep track of (dampened) average lag.
-        uint64_t lag = ((now - s_lastMark) / 1000000);
+        uint32_t lag = (uint32_t) ((now - s_lastMark) / 1000000);
         lag = (lag < POLL_PERIOD_MS) ? 0 : lag - POLL_PERIOD_MS;
         s_currentLag = (lag + (s_currentLag * (AVG_DECAY_FACTOR-1))) /
             AVG_DECAY_FACTOR;
