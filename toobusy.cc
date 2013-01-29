@@ -106,3 +106,5 @@ extern "C" void init(Handle<Object> target) {
     uv_timer_init(uv_default_loop(), &s_timer);
     uv_timer_start(&s_timer, every_second, POLL_PERIOD_MS, POLL_PERIOD_MS);
 };
+
+NODE_MODULE(toobusy, init);
