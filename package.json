@@ -4,7 +4,7 @@
   "homepage": "https://github.com/lloyd/node-toobusy",
   "version": "0.2.2",
   "dependencies": {
-    "bindings": "1.0.0"
+    "bindings": "1.1.0"
   },
   "devDependencies": {
     "should": "1.2.1",
