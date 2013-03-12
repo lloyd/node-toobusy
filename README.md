@@ -86,12 +86,12 @@ The default of 70 should get you started.
 
 ## references
 
->> There is nothing new under the sun. (Ecclesiastes 1:9)
+> There is nothing new under the sun. (Ecclesiastes 1:9)
 
 Though applying "event loop latency" to node.js was not directly inspired by anyone else's work,
 this concept is not new.  Here are references to others who apply the same technique:
 
-  * [Provos, Lever, and Tweedie 2000][http://www.kegel.com/c10k.html#tips] - "notes that dropping incoming connections when the server is overloaded improved the shape of the performance curve."
+  * [Provos, Lever, and Tweedie 2000](http://www.kegel.com/c10k.html#tips) - "notes that dropping incoming connections when the server is overloaded improved the shape of the performance curve."
 
 ## license
 
