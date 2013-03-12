@@ -1,3 +1,6 @@
+0.2.3 -
+  * node.js 0.10.0 support - uprade to latest bindings and include in .travis.yml
+
 0.2.2 -
   * *really* works on windows
   * improved documentation
