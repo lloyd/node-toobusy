@@ -25,7 +25,6 @@ function processRequest(res, num, startTime) {
 http.createServer(function (req, res) {
   if (toobusy()) {
     res.writeHead(503);
-    res.end();
     return res.end();
   }
 
