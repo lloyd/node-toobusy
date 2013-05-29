@@ -1,3 +1,7 @@
+0.3.0 -
+  * full JS implementation, removed c code & bindings
+  * example bugfixes
+
 0.2.3 -
   * node.js 0.10.0 support - uprade to latest bindings and include in .travis.yml
 

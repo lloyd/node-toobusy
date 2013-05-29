@@ -29,7 +29,7 @@ setInterval(function() {
       if (endOrError) console.log("end AND error");
       endOrError = true;
     }
-    http.request({
+    var req = http.get({
       host: '127.0.0.1',
       port: 3000,
       agent: false,
@@ -38,23 +38,21 @@ setInterval(function() {
         "connection": "close"
       }
     }, function(res) {
-      res.on('end', function() {
-        if (res.statusCode === 503) {
-          fiveOhThree++;
-        } else {
-          twoHundred++;
-        }
-        avg = ((new Date() - start) + avg * started) / (started + 1);
-        running--;
-        cEndOrError();
-      });
+      if (res.statusCode === 503) {
+        fiveOhThree++;
+      } else {
+        twoHundred++;
+      }
+      avg = ((new Date() - start) + avg * started) / (started + 1);
+      running--;
+      cEndOrError();
     }).on('error', function(e) {
       process.stderr.write(e.toString() + " - " + (new Date() - start) + "ms\n");
       avg = ((new Date() - start) + avg * started) / (started + 1);
       running--;
       yucky++;
       cEndOrError();
-    }).end();
+    });
   }
 
   for (var i = 0; i < curRPS ; i++) startOne();

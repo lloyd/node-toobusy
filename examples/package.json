@@ -4,6 +4,6 @@
   "description": "dependencies required by the toobusy examples",
   "private": true,
   "dependencies": {
-    "express": "2"
+    "express": "3"
   }
 }

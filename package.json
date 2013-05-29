@@ -2,9 +2,8 @@
   "name": "toobusy",
   "description": "Don't fall over when your Node.JS server is too busy.",
   "homepage": "https://github.com/lloyd/node-toobusy",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "dependencies": {
-    "bindings": "1.1.0"
   },
   "devDependencies": {
     "should": "1.2.1",
@@ -32,7 +31,7 @@
   ],
   "main": "./index.js",
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.9.1"
   },
   "scripts": {
     "test": "mocha tests"
