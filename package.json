@@ -24,7 +24,7 @@
       "type": "WTFPL"
     }
   ],
-  "repositories": [
+  "repository": [
     {
       "type": "git",
       "url": "git://github.com/lloyd/node-toobusy.git"
