@@ -24,12 +24,10 @@
       "type": "WTFPL"
     }
   ],
-  "repositories": [
-    {
+  "repository": {
       "type": "git",
       "url": "git://github.com/lloyd/node-toobusy.git"
-    }
-  ],
+  },
   "main": "./index.js",
   "engines": {
     "node": ">=0.8.0"
