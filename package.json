@@ -10,26 +10,18 @@
     "should": "1.2.1",
     "mocha": "1.7.0"
   },
-  "maintainers": [
-    {
-      "name": "Lloyd Hilaiel",
-      "email": "lloyd@hilaiel.com"
-    }
-  ],
+  "author": {
+    "name": "Lloyd Hilaiel",
+    "email": "lloyd@hilaiel.com"
+  },
   "bugs": {
     "url": "https://github.com/lloyd/node-toobusy/issues"
   },
-  "licenses": [
-    {
-      "type": "WTFPL"
-    }
-  ],
-  "repositories": [
-    {
-      "type": "git",
-      "url": "git://github.com/lloyd/node-toobusy.git"
-    }
-  ],
+  "license": "WTFPL",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/lloyd/node-toobusy.git"
+  },
   "main": "./index.js",
   "engines": {
     "node": ">=0.8.0"
