@@ -1,6 +1,6 @@
 # Is Your Node Process Too Busy?
 
-[![Build Status](https://secure.travis-ci.org/lloyd/node-toobusy.png)](http://travis-ci.org/lloyd/node-toobusy)
+[![Build Status](https://travis-ci.org/lloyd/node-toobusy.png)](https://travis-ci.org/lloyd/node-toobusy)
 
 What happens when your service is overwhelmed with traffic?
 Your server can do one of two things:
@@ -58,7 +58,6 @@ process.on('SIGINT', function() {
   server.close();
   // calling .shutdown allows your process to exit normally
   toobusy.shutdown();
-  process.exit();
 });
 ```
 
