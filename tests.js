@@ -33,7 +33,7 @@ describe('toobusy()', function() {
     function load() {
       if (toobusy()) return done();
       var start = new Date();
-      while ((new Date() - start) < 250) {
+      while ((new Date() - start) < 300) {
         for (var i = 0; i < 1e5;) i++;
       }
       setTimeout(load, 0);
