@@ -94,6 +94,7 @@ extern "C" void init(Handle<Object> target) {
     target->Set(String::New("maxLag"), FunctionTemplate::New(HighWaterMark)->GetFunction());
     uv_timer_init(uv_default_loop(), &s_timer);
     uv_timer_start(&s_timer, every_second, POLL_PERIOD_MS, POLL_PERIOD_MS);
+    uv_unref((uv_handle_t* )&s_timer);
 };
 
 NODE_MODULE(toobusy, init);
