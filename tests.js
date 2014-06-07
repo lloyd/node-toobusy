@@ -3,10 +3,11 @@ should = require('should'),
 toobusy = require('./');
 
 describe('the library', function() {
-  it('should export a couple functions', function(done) {
-    (toobusy).should.be.a('function');
-    (toobusy.maxLag).should.be.a('function');
-    (toobusy.shutdown).should.be.a('function');
+  it('should export functions', function(done) {
+    (toobusy).should.be.a.Function;
+    (toobusy.lag).should.be.a.Function;
+    (toobusy.maxLag).should.be.a.Function;
+    (toobusy.shutdown).should.be.a.Function;
     done();
   });
 });
@@ -33,7 +34,7 @@ describe('toobusy()', function() {
     function load() {
       if (toobusy()) return done();
       var start = new Date();
-      while ((new Date() - start) < 250) {
+      while ((new Date() - start) < 300) {
         for (var i = 0; i < 1e5;) i++;
       }
       setTimeout(load, 0);
