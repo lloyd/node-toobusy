@@ -36,7 +36,7 @@ NAN_METHOD(TooBusy) {
         double r = (rand() / (double) RAND_MAX) * 100.0;
         if (r < pctToBlock) block = true;
     }
-    NanReturnValue(block ? True() : False());
+    NanReturnValue(block ? NanTrue() : NanFalse());
 }
 
 NAN_METHOD(ShutDown) {
@@ -49,7 +49,7 @@ NAN_METHOD(ShutDown) {
 
 NAN_METHOD(Lag) {
     NanScope();
-    NanReturnValue(Integer::New(s_currentLag));
+    NanReturnValue(NanNew<Integer>(s_currentLag));
 }
 
 NAN_METHOD(HighWaterMark) {
@@ -66,10 +66,10 @@ NAN_METHOD(HighWaterMark) {
         HIGH_WATER_MARK_MS = hwm;
     }
 
-    NanReturnValue(Number::New(HIGH_WATER_MARK_MS));
+    NanReturnValue(NanNew<Number>(HIGH_WATER_MARK_MS));
 }
 
-static void every_second(uv_timer_t* handle, int status)
+static void every_second(uv_timer_t* handle)
 {
     uint64_t now = uv_hrtime();
 
@@ -83,12 +83,17 @@ static void every_second(uv_timer_t* handle, int status)
     s_lastMark = now;
 };
 
+static void every_second(uv_timer_t* handle, int status)
+{
+  every_second(handle);
+}
+
 extern "C" void init(Handle<Object> target) {
 
-    target->Set(NanSymbol("toobusy"), FunctionTemplate::New(TooBusy)->GetFunction());
-    target->Set(NanSymbol("shutdown"), FunctionTemplate::New(ShutDown)->GetFunction());
-    target->Set(NanSymbol("lag"), FunctionTemplate::New(Lag)->GetFunction());
-    target->Set(NanSymbol("maxLag"), FunctionTemplate::New(HighWaterMark)->GetFunction());
+    target->Set(NanNew<String>("toobusy"), NanNew<FunctionTemplate>(TooBusy)->GetFunction());
+    target->Set(NanNew<String>("shutdown"), NanNew<FunctionTemplate>(ShutDown)->GetFunction());
+    target->Set(NanNew<String>("lag"), NanNew<FunctionTemplate>(Lag)->GetFunction());
+    target->Set(NanNew<String>("maxLag"), NanNew<FunctionTemplate>(HighWaterMark)->GetFunction());
     uv_timer_init(uv_default_loop(), &s_timer);
     uv_timer_start(&s_timer, every_second, POLL_PERIOD_MS, POLL_PERIOD_MS);
 };
