@@ -5,7 +5,7 @@ var toobusy = require('../');
 var work = 524288;
 
 function worky() {
-  var howBusy = toobusy();
+  var howBusy = toobusy.lag();
   if (howBusy) {
     work /= 4;
     console.log("I can't work! I'm too busy:", howBusy + "ms behind");
