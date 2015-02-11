@@ -23,6 +23,7 @@ static uint32_t s_currentLag;
 static uint64_t s_lastMark;
 
 NAN_METHOD(TooBusy) {
+    NanScope();
     // No HandleScope required, because this function allocates no
     // v8 classes that reside on the heap.
     bool block = false;
