@@ -24,8 +24,7 @@ static uint64_t s_lastMark;
 
 NAN_METHOD(TooBusy) {
     NanScope();
-    // No HandleScope required, because this function allocates no
-    // v8 classes that reside on the heap.
+
     bool block = false;
     if (s_currentLag > HIGH_WATER_MARK_MS) {
         // probabilistically block requests proportional to how

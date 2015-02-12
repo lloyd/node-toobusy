@@ -62,7 +62,7 @@ process.on('SIGINT', function() {
 });
 ```
 
-## tunable parameters
+## tuneable parameters
 
 The one knob that the library exposes is "maximum lag".
 This number represents the maximum amount of time in milliseconds that the event queue is behind,

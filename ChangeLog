@@ -2,7 +2,7 @@
   * fix repository key in package.json
 
 0.2.3 -
-  * node.js 0.10.0 support - uprade to latest bindings and include in .travis.yml
+  * node.js 0.10.0 support - upgrade to latest bindings and include in .travis.yml
 
 0.2.2 -
   * *really* works on windows
