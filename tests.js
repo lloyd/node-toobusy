@@ -30,10 +30,11 @@ describe('maxLag', function() {
 
 describe('toobusy()', function() {
   it('should return true after a little load', function(done) {
+    this.timeout(5000);
     function load() {
       if (toobusy()) return done();
       var start = new Date();
-      while ((new Date() - start) < 250) {
+      while ((new Date() - start) < 500) {
         for (var i = 0; i < 1e5;) i++;
       }
       setTimeout(load, 0);
