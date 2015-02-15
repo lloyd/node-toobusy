@@ -56,10 +56,12 @@ NAN_METHOD(HighWaterMark) {
     if (args.Length() >= 1) {
         if (!args[0]->IsNumber()) {
             NanThrowError("expected numeric first argument");
+            NanReturnUndefined();
         }
         int hwm = args[0]->Int32Value();
         if (hwm < 10) {
             NanThrowError("maximum lag should be greater than 10ms");
+            NanReturnUndefined();
         }
         HIGH_WATER_MARK_MS = hwm;
     }
