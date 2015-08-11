@@ -15,7 +15,7 @@ static unsigned int HIGH_WATER_MARK_MS = 70;
 // A dampening factor.  When determining average calls per second or
 // current lag, we weigh the current value against the previous value 2:1
 // to smooth spikes.
-static const unsigned int AVG_DECAY_FACTOR = 3;
+static unsigned int AVG_DECAY_FACTOR = 3;
 
 //static uv_idle_t s_idler;
 static uv_timer_t s_timer;
@@ -71,6 +71,27 @@ Handle<Value> HighWaterMark(const Arguments& args) {
     return scope.Close(Number::New(HIGH_WATER_MARK_MS));
 }
 
+Handle<Value> DampeningFactor(const Arguments& args) {
+    HandleScope scope;
+
+    if (args.Length() >= 1) {
+        if (!args[0]->IsNumber()) {
+            return v8::ThrowException(
+                v8::Exception::Error(
+                    v8::String::New("expected numeric first argument")));
+        }
+        int df = args[0]->Int32Value();
+        if (df < 0) {
+            return v8::ThrowException(
+                v8::Exception::Error(
+                    v8::String::New("dampening factor should be greater than 0")));
+        }
+        AVG_DECAY_FACTOR = df;
+    }
+
+    return scope.Close(Number::New(AVG_DECAY_FACTOR));
+}
+
 static void every_second(uv_timer_t* handle, int status)
 {
     uint64_t now = uv_hrtime();
@@ -92,6 +113,8 @@ extern "C" void init(Handle<Object> target) {
     target->Set(String::New("shutdown"), FunctionTemplate::New(ShutDown)->GetFunction());
     target->Set(String::New("lag"), FunctionTemplate::New(Lag)->GetFunction());
     target->Set(String::New("maxLag"), FunctionTemplate::New(HighWaterMark)->GetFunction());
+    target->Set(String::New("dampeningFactor"), FunctionTemplate::New(DampeningFactor)->GetFunction());
+
     uv_timer_init(uv_default_loop(), &s_timer);
     uv_timer_start(&s_timer, every_second, POLL_PERIOD_MS, POLL_PERIOD_MS);
 };
