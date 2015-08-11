@@ -29,9 +29,8 @@ Handle<Value> TooBusy(const Arguments& args) {
     if (s_currentLag > HIGH_WATER_MARK_MS) {
         // probabilistically block requests proportional to how
         // far behind we are.
-        double pctToBlock = ((s_currentLag - HIGH_WATER_MARK_MS) /
-                             (double) HIGH_WATER_MARK_MS) * 100.0;
-        double r = (rand() / (double) RAND_MAX) * 100.0;
+        double pctToBlock = (s_currentLag - HIGH_WATER_MARK_MS) / (double) HIGH_WATER_MARK_MS;
+        double r = rand() / (double) RAND_MAX;
         if (r < pctToBlock) block = true;
     }
     return block ? True() : False();

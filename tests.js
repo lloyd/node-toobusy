@@ -62,6 +62,18 @@ describe('toobusy()', function() {
 });
 
 describe('dampeningFactor', function() {
+  beforeEach(function resetToNotBusy(done) {
+    var original_dampeningFactor = toobusy.dampeningFactor();
+    toobusy.dampeningFactor(1); // for immediate reset
+
+    var resetID = setInterval(waitForNotBusy, 50);
+    function waitForNotBusy() {
+      if (toobusy()) return;
+      clearInterval(resetID);
+      toobusy.dampeningFactor(original_dampeningFactor);
+      done();
+    }
+  });
   it('should default to 3', function(done) {
     (toobusy.dampeningFactor()).should.equal(3);
     done();
@@ -76,23 +88,7 @@ describe('dampeningFactor', function() {
     (toobusy.dampeningFactor()).should.equal(5);
     done();
   });
-});
-
-describe('dampeningFactor\'s behaviour', function() {
-  beforeEach(function resetToNotBusy(done) {
-    var original_dampeningFactor = toobusy.dampeningFactor();
-    toobusy.dampeningFactor(1); // for immediate reset
-
-    var resetID = setInterval(waitForNotBusy, 50);
-    function waitForNotBusy() {
-      if (toobusy()) return;
-      clearInterval(resetID);
-      toobusy.dampeningFactor(original_dampeningFactor);
-      done();
-    }
-  });
-
-  it('No dampening gets toobusy immediately', function(done) {
+  it('should allow no dampening', function(done) {
     var cycles_to_toobusy = 0;
     toobusy.dampeningFactor(1); // no dampening
 
@@ -113,8 +109,7 @@ describe('dampeningFactor\'s behaviour', function() {
       done();
     });
   });
-
-  it('No dampening gets toobusy immediately', function(done) {
+  it('should respect larger dampening factors', function(done) {
     var cycles_to_toobusy = 0;
     toobusy.dampeningFactor(25);
 
