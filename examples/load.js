@@ -48,6 +48,8 @@ setInterval(function() {
         running--;
         cEndOrError();
       });
+      
+      res.resume();
     }).on('error', function(e) {
       process.stderr.write(e.toString() + " - " + (new Date() - start) + "ms\n");
       avg = ((new Date() - start) + avg * started) / (started + 1);
