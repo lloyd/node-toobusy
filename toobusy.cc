@@ -1,4 +1,5 @@
 #include <v8.h>
+#include <nan.h>
 #include <node.h>
 #include <uv.h>
 #include <stdlib.h>
@@ -22,7 +23,8 @@ static uv_timer_t s_timer;
 static uint32_t s_currentLag;
 static uint64_t s_lastMark;
 
-Handle<Value> TooBusy(const Arguments& args) {
+NAN_METHOD(TooBusy) {
+    Nan::HandleScope scope;
     // No HandleScope required, because this function allocates no
     // v8 classes that reside on the heap.
     bool block = false;
@@ -34,44 +36,40 @@ Handle<Value> TooBusy(const Arguments& args) {
         double r = (rand() / (double) RAND_MAX) * 100.0;
         if (r < pctToBlock) block = true;
     }
-    return block ? True() : False();
+    info.GetReturnValue().Set(Nan::New(block));
 }
 
-Handle<Value> ShutDown(const Arguments& args) {
+NAN_METHOD(ShutDown) {
     // No HandleScope required, because this function allocates no
     // v8 classes that reside on the heap.
 
     uv_timer_stop(&s_timer);
-    return Undefined();
 }
 
-Handle<Value> Lag(const Arguments& args) {
-    HandleScope scope;
-    return scope.Close(Integer::New(s_currentLag));
+NAN_METHOD(Lag) {
+    Nan::HandleScope scope;
+    info.GetReturnValue().Set(Nan::New(s_currentLag));
 }
 
-Handle<Value> HighWaterMark(const Arguments& args) {
-    HandleScope scope;
-
-    if (args.Length() >= 1) {
-        if (!args[0]->IsNumber()) {
-            return v8::ThrowException(
-                v8::Exception::Error(
-                    v8::String::New("expected numeric first argument")));
+NAN_METHOD(HighWaterMark) {
+    Nan::HandleScope scope;
+    if (info.Length() >= 1) {
+        if (!info[0]->IsNumber()) {
+            Nan::ThrowError("expected numeric first argument");
+            return;
         }
-        int hwm = args[0]->Int32Value();
+        int hwm = info[0]->Int32Value();
         if (hwm < 10) {
-            return v8::ThrowException(
-                v8::Exception::Error(
-                    v8::String::New("maximum lag should be greater than 10ms")));
+            Nan::ThrowError("maximum lag should be greater than 10ms");
+            return;
         }
         HIGH_WATER_MARK_MS = hwm;
     }
 
-    return scope.Close(Number::New(HIGH_WATER_MARK_MS));
+    info.GetReturnValue().Set(Nan::New(HIGH_WATER_MARK_MS));
 }
 
-static void every_second(uv_timer_t* handle, int status)
+static void every_second(uv_timer_t* handle)
 {
     uint64_t now = uv_hrtime();
 
@@ -85,13 +83,18 @@ static void every_second(uv_timer_t* handle, int status)
     s_lastMark = now;
 };
 
-extern "C" void init(Handle<Object> target) {
-    HandleScope scope;
+__attribute__((unused)) static void every_second(uv_timer_t* handle, int) {
+    every_second(handle);
+}
 
-    target->Set(String::New("toobusy"), FunctionTemplate::New(TooBusy)->GetFunction());
-    target->Set(String::New("shutdown"), FunctionTemplate::New(ShutDown)->GetFunction());
-    target->Set(String::New("lag"), FunctionTemplate::New(Lag)->GetFunction());
-    target->Set(String::New("maxLag"), FunctionTemplate::New(HighWaterMark)->GetFunction());
+extern "C" NAN_MODULE_INIT(init) {
+    Nan::HandleScope scope;
+
+    Nan::SetMethod(target, "toobusy", TooBusy);
+    Nan::SetMethod(target, "shutdown", ShutDown);
+    Nan::SetMethod(target, "lag", Lag);
+    Nan::SetMethod(target, "maxLag", HighWaterMark);
+
     uv_timer_init(uv_default_loop(), &s_timer);
     uv_timer_start(&s_timer, every_second, POLL_PERIOD_MS, POLL_PERIOD_MS);
 };

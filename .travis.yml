@@ -1,8 +1,14 @@
 language: node_js
 
 node_js:
- - 0.8
- - 0.10
+ - '0.8'
+ - '0.10'
+ - '0.12'
+
+matrix:
+  include:
+    - node_js: '4'
+      env: CC=clang CXX=clang++
 
 notifications:
   email:
