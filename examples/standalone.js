@@ -8,7 +8,7 @@ function worky() {
   var howBusy = toobusy();
   if (howBusy) {
     work /= 4;
-    console.log("I can't work! I'm too busy:", howBusy + "ms behind");
+    console.log("I can't work! I'm too busy:", toobusy.lag() + "ms behind");
   }
   work *= 2;
   for (var i = 0; i < work;) i++;
