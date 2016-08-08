@@ -1,6 +1,8 @@
-# Is Your Node Process Too Busy?
+# This repo is obsolete.
 
-[![Build Status](https://secure.travis-ci.org/lloyd/node-toobusy.png)](http://travis-ci.org/lloyd/node-toobusy)
+Samuel Reed has a working fork at [STRML/node-toobusy](https://github.com/STRML/node-toobusy) with up-to-date maintenance.
+
+# Is Your Node Process Too Busy?
 
 What happens when your service is overwhelmed with traffic?
 Your server can do one of two things:
