@@ -1,6 +1,6 @@
 # Is Your Node Process Too Busy?
 
-[![Build Status](https://secure.travis-ci.org/lloyd/node-toobusy.png)](http://travis-ci.org/lloyd/node-toobusy)
+[![Build Status](https://secure.travis-ci.org/lloyd/node-toobusy.svg)](http://travis-ci.org/lloyd/node-toobusy)
 
 What happens when your service is overwhelmed with traffic?
 Your server can do one of two things:
@@ -23,21 +23,21 @@ and continue serving as many requests as possible.
 
 ## installation
 
-```
-npm install toobusy
+```bash
+npm install toobusy --save
 ```
 
 
 ## usage
 
-```javascript
-var toobusy = require('toobusy'),
+```js
+const toobusy = require('toobusy'),
     express = require('express');
-    
-var app = express();
+
+const app = express();
     
 // middleware which blocks requests when we're too busy
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   if (toobusy()) {
     res.send(503, "I'm busy right now, sorry.");
   } else {
@@ -45,16 +45,16 @@ app.use(function(req, res, next) {
   } 
 });
     
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   // processing the request requires some work!
-  var i = 0;
+  let i = 0;
   while (i < 1e5) i++;
   res.send("I counted to " + i);
 });
   
-var server = app.listen(3000);
+const server = app.listen(3000);
   
-process.on('SIGINT', function() {
+process.on('SIGINT', () => {
   server.close();
   // calling .shutdown allows your process to exit normally
   toobusy.shutdown();
