@@ -13,7 +13,7 @@ This library helps you do the latter.
 ## How it works
 
 `toobusy` polls the node.js event loop and keeps track of "lag",
-which is long requests wait in node's event queue to be processed.
+which are long requests waiting in node's event queue to be processed.
 When lag crosses a threshold, `toobusy` tells you that you're *too busy*.
 At this point you can stop request processing early
 (before you spend too much time on them and compound the problem),
@@ -21,39 +21,39 @@ and return a "Server Too Busy" response.
 This allows your server to stay *responsive* under extreme load,
 and continue serving as many requests as possible.
 
-## installation
+## Installation
 
 ```
 npm install toobusy
 ```
 
 
-## usage
+## Usage
 
 ```javascript
 var toobusy = require('toobusy'),
     express = require('express');
-    
+
 var app = express();
-    
+
 // middleware which blocks requests when we're too busy
 app.use(function(req, res, next) {
   if (toobusy()) {
     res.send(503, "I'm busy right now, sorry.");
   } else {
     next();
-  } 
+  }
 });
-    
+
 app.get('/', function(req, res) {
   // processing the request requires some work!
   var i = 0;
   while (i < 1e5) i++;
   res.send("I counted to " + i);
 });
-  
+
 var server = app.listen(3000);
-  
+
 process.on('SIGINT', function() {
   server.close();
   // calling .shutdown allows your process to exit normally
@@ -62,7 +62,7 @@ process.on('SIGINT', function() {
 });
 ```
 
-## tunable parameters
+## Tunable parameters
 
 The one knob that the library exposes is "maximum lag".
 This number represents the maximum amount of time in milliseconds that the event queue is behind,
@@ -84,15 +84,15 @@ and the specifics of your hardware and application can change them drastically,
 so experiment!
 The default of 70 should get you started.
 
-## references
+## References
 
 > There is nothing new under the sun. (Ecclesiastes 1:9)
 
 Though applying "event loop latency" to node.js was not directly inspired by anyone else's work,
-this concept is not new.  Here are references to others who apply the same technique:
+this concept is not new.  Here are references to others who applied the same technique:
 
   * [Provos, Lever, and Tweedie 2000](http://www.kegel.com/c10k.html#tips) - "notes that dropping incoming connections when the server is overloaded improved the shape of the performance curve."
 
-## license
+## License
 
 [WTFPL](http://wtfpl.net)
