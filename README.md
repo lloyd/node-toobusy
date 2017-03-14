@@ -95,4 +95,4 @@ this concept is not new.  Here are references to others who apply the same techn
 
 ## license
 
-[WTFPL](http://wtfpl.org)
+[WTFPL](http://wtfpl.net)
